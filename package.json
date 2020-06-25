@@ -7,14 +7,16 @@
   "description": "A simple Node app built on Express, instantly up and running.",
   "main": "mybot.js",
   "scripts": {
-    "start": "node mybot.js",
-    "start":"node server.js"
-  
+    "start": "node mybot.js"
   },
   "dependencies": {
     "express": "^4.17.1",
-    "discord.js": "^12.2.0"
-    
+    "discord.js": "^12.2.0",
+    "ms": "^2.1.2",
+    "moment": "^2.27.0",
+    "enmap": "^5.3.1",
+    "moment-duration-format": "^2.2.2",
+    "superagent": "^5.2.2"
   },
   "engines": {
     "node": "12.x"
