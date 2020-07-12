@@ -10,12 +10,15 @@
     "start": "node mybot.js"
   },
   "dependencies": {
-    "express": "^4.17.1",
+    "better-sqlite3": "^7.1.0",
+    "colors": "^1.4.0",
     "discord.js": "^12.2.0",
-    "ms": "^2.1.2",
-    "moment": "^2.27.0",
     "enmap": "^5.3.1",
+    "express": "^4.17.1",
+    "moment": "^2.27.0",
     "moment-duration-format": "^2.2.2",
+    "ms": "^2.1.2",
+    "require-reload": "^0.2.2",
     "superagent": "^5.2.2"
   },
   "engines": {
