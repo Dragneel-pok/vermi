@@ -377,7 +377,7 @@ message.delete()
     .addField("<a:1_emoji_89:695280101830557815>|#2", "Please read each channel topic and use each channel appropiately.")
     .addField("<a:1_emoji_89:695280101830557815>|#3","No excessive cussing please.")
     .addField( "<a:1_emoji_89:695280101830557815>|#4"," No Homophobic Slurs, Inappropiate topics, Discrimination, Racist Slurs of any kind.")
-    .addField("<a:1_emoji_89:695280101830557815>|#5", "Do not ask for ranks please,if u want get some high roles and rank please check #ranks-loop channel;u will get the details!")
+    .addField("<a:1_emoji_89:695280101830557815>|#5", "Do not ask for ranks please,if u want get some high roles and rank please check <#729939475324731413> channel;u will get the details!")
     .addField("<a:1_emoji_89:695280101830557815>|#6","No excessive spamming please (You only gain xp once per minute so its no use and beware of bots too lol) and there is <#680244415259738352> channel for emote spam. You will be punished accordingly if seen by mods.")
     .addField("<a:1_emoji_89:695280101830557815>|#7","Do not bring drama or start arguments in this chat, keep it in dms if need be.")
     .addField("<a:1_emoji_89:695280101830557815>|#8"," Do not tag <@&700767688158609478>   if you were banned or punished. Make an appeal.")
@@ -516,7 +516,7 @@ if (message.content.toLowerCase().startsWith(prefix + 'mroles')  && message.memb
   .setColor('#87fd05')
   .setAuthor('command by' + message.author.username)
   .setTitle('Server dedicated roles')
-  .addField('mroles','`addmod|unmod`/`ytadd`/`yt+add`/`gfxadd`/`clanadd`/`royaladd`')
+  .addField('mroles','`addmod/unmod`| `ytadd`| `yt+add`| `gfxadd`| `clanadd`')
   .setFooter('beep boop,beep boop','https://cdn.discordapp.com/attachments/726134541638697042/726134624849362944/4639_veryleaksgif.gif')
   message.channel.send({embed:mrolesembed})
   message.delete();
@@ -686,8 +686,81 @@ if (message.content.toLowerCase().startsWith(prefix + "gfxadd" )) {
 
 
 
+
+//e) CLAN APPLY\\
+if (message.content.toLowerCase().startsWith(prefix + "clanapply") && message.guild.channels.cache.get('677816256488931328')) {
+    message.delete({timeout:1000});
+    var applyembed = new Discord.MessageEmbed()
+    .setColor('#02e29f')
+    .setDescription(`${message.author} You applied for the <@&677465656966381588> 
+    **Hope u read  everything in<#677560689732223027>**
+     __**Some extra Questions,answer them in the same format below**__
+  
+ > \`Previous clan\` -- **\`Clan Name\`**
+ > \`Esports experience\` > **\`No |Fair enough| GooD| Regulars\`**
+ > \`Joining for\`-- **\`Esports | Casual Rank Playing| Time pass\`**
+  __**Now after that please include Your GAME STATS PIC RIGHT BELOW**__`)
+    message.channel.send({embed:applyembed});
+    var receiveembed = new Discord.MessageEmbed()
+    .setColor('#02e29f')
+    .setDescription(`**${message.author}** just applied for the <@&677465656966381588> **Special rank**!Would be very helpful if **Management** Please Filter out the applicants stats according to the requirements`)
+    message.guild.channels.cache.get("732091739736899655").send({embed: receiveembed} );
+}
+// CLAN SELECTED
+if (message.content.toLowerCase().startsWith(prefix + "clanadd" )) {
+   if (!message.member.hasPermission("ADMINISTRATOR")) {
+    return message.reply("Sorry, you don't have permissions to do this!")
+    .then (m => m.delete({timeout :1500}));
+} else {
+  if (message.member.hasPermission('ADMINISTRATOR')) {
+  if (message.mentions.members.size < 1) {
+    message.reply('Mention our OP wizard,for this trusted role.')
+  } else {
+    
+    let role = message.guild.roles.cache.get("677465656966381588");
+    let user = message.mentions.members.first()
+    user.roles.add(role).catch(console.error);
+  var gfxembed = new Discord.MessageEmbed()
+    .setColor('#f16798')
+    .setDescription(`**${user.user.username}** <@&677465656966381588> role AND  ur application for joining **FEARY WIZARDS**  has been accepted ! Quite close to us now, u are ! **PLease send ur ingame ID in the <#702700849683628134>**  and tag** Dragneel** ,so we can add you `)
+    message.guild.channels.cache.get("729943660124176494").send(`${user.toString()}`).then(sent =>{
+    sent.edit({embed:gfxembed})
+   })
+}
+}
+}
+};
+
+// CLAN DENIED
+if (message.content.toLowerCase().startsWith(prefix + "cdenied" )) {
+   if (!message.member.hasPermission("MANAGE_ROLES")) {
+    return message.reply("Sorry, you don't have permissions to do this!")
+    .then (m => m.delete({timeout :1500}));
+} else {
+  if (message.member.hasPermission('MANAGE_ROLES')) {
+  if (message.mentions.members.size < 1) {
+    message.reply('Mention our  wizard first.')
+  } else {
+    
+    let role = message.guild.roles.cache.get("677465656966381588");
+    let user = message.mentions.members.first()
+    user.roles.add(role).catch(console.error);
+  var gfxembed = new Discord.MessageEmbed()
+    .setColor('#f16798')
+    .setDescription(`**${user.user.username}** <@&677465656966381588> requirements were not met as per requirements mentioned in <#677560689732223027>! **please make sure the requirements are met accordingly**`)
+    message.guild.channels.cache.get("729943660124176494").send(`${user.toString()}`).then(sent =>{
+    sent.edit({embed:gfxembed})
+   })
+}
+}
+}
+};
+
+
+
 //HOW TO --------------------------------------\\
-if (message.content.toLowerCase().startsWith(prefix + 'howto') && message.member.hasPermission('MANAGE_SERVER')) {
+if (message.content.startsWith(prefix +'howto') 
+&& message.member.hasPermission('MANAGE_SERVER')) {
 var hwotoembed = new Discord.MessageEmbed()
 .setAuthor('howto for' + message.author.username)
 .setColor('#aef105')
@@ -697,7 +770,10 @@ var hwotoembed = new Discord.MessageEmbed()
 message.channel.send({embed:hwotoembed})
 message.delete();
 
-}
+};
+
+//TEXT-------------------------------------\\
+
 
 
 
