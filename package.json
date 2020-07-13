@@ -5,9 +5,9 @@
   "name": "hello-express",
   "version": "0.0.1",
   "description": "A simple Node app built on Express, instantly up and running.",
-  "main": "mybot.js",
+  "main": "vermi.js",
   "scripts": {
-    "start": "node mybot.js"
+    "start": "node vermi.js"
   },
   "dependencies": {
     "better-sqlite3": "^7.1.0",
