@@ -44,7 +44,7 @@ var parseTime = function(milliseconds) {
 bot.on("ready", () => {
    console.log("konichiwaa!");
   
-bot.user.setActivity(` +help|with ${bot.users.cache.size} Wizards`, {
+bot.user.setActivity(`sad days without discord T_T`, {
   type: "STREAMING",
   url:"https://www.twitch.tv/."}); 
 });
