@@ -1,4 +1,4 @@
-var express = require("express");
+ var express = require("express");
 var http = require("http");
 var app = express();
 
@@ -44,7 +44,7 @@ var parseTime = function(milliseconds) {
 bot.on("ready", () => {
    console.log("konichiwaa!");
   
-bot.user.setActivity(` +help|with ${bot.users.cache.size} Wizards`, {
+bot.user.setActivity(` sad days,no discording T_T`, {
   type: "STREAMING",
   url:"https://www.twitch.tv/."}); 
 });
@@ -77,7 +77,7 @@ const prefixMention = new RegExp(`^<@!?${bot.user.id}>( |)$`);
   }
 
     
-  
+//RELOAD  
  if(message.content.toLowerCase().startsWith(prefix + "reload")){
     if(message.author.id !== config.owner) {
       message.reply(`you have no perms for this command!`)
@@ -85,9 +85,9 @@ const prefixMention = new RegExp(`^<@!?${bot.user.id}>( |)$`);
     }
     if(message.author.id == config.owner  )  {
       var reload = require('require-reload')(require),
-      api = reload('./mybot.js');
+      api = reload('./vermi.js');
       try {
-          api = reload('./mybot.js');
+          api = reload('./vermi.js');
       } catch (e) {
           console.error("Failed to reload bot! Error: ", e);
       }
@@ -100,13 +100,35 @@ const prefixMention = new RegExp(`^<@!?${bot.user.id}>( |)$`);
    .setDescription('**`mybot.js` has be reloaded! dragy no errorsfound, all refreshed**');
    message.channel.send(pingEmbed)
    return;
-};
-    }
+};   
+}
   
- 
-    
- 
-
+//Info command\\
+if (message.content.toLowerCase().startsWith(prefix + 'info')) {
+    const used = process.memoryUsage().heapUsed / 1024 / 1024;
+    var InfoEmbed = new Discord.MessageEmbed()
+    .setColor('BLUE')
+    .setThumbnail(bot.user.avatarURL)
+    .setTitle(bot.user.tag + `'s Info`)
+    .setDescription('</> with love by <@672695020100386846>!')
+    .addField('Prefix', prefix, true)
+    .addField("Creator", "Dragneel-NUB", true)
+    .addField("Libary", "Node.JS & Discord.JS", true)
+    .addField("Version", config.ver, true)
+    .addField('Guilds', bot.guilds.cache.size, true)
+    .addField("Channels", bot.channels.cache.size, true)
+    .addField("Users",bot.users.cache.size, true)
+    .addField("Ping", Math.round(bot.ws.ping) + "ms", true)
+    .addField("Memory Used", `${Math.round(used * 100) / 100}MB`,true)
+    .addField("Uptime", parseTime(bot.uptime), true);
+message.channel.send({embed: InfoEmbed});
+};
+     
+ if (message.content.toLowerCase().startsWith(prefix + 'guilds') && ["672695020100386846"].includes(message.author.id)) {
+  
+    const guildNames = bot.guilds.cache.map(g => g.name).join("\n")
+    message.channel.send('**' + bot.user.username + '\'s Guilds.**\n ```' + guildNames + '```')
+}; 
 
   //Help Command\\
 if (message.content.toLowerCase().startsWith(prefix + "help")) {
@@ -253,7 +275,7 @@ if (message.content.toLowerCase().startsWith(prefix + "help")) {
     .setColor('#ee09b8')
     .setTitle('Use of cmd is prohibited in general channels')
     .setDescription('use CMD in  <#684657636150345769> channel')
-    .addField(prefix + 'botinfo','--Miss vermi info',true)
+    .addField(prefix + 'info','--Miss vermi info',true)
     .addField(prefix + 'ping','-- ping of vermi',true)
     .addField(prefix +'uptime','--Gets u the uptime of bot')
     .setThumbnail('https://cdn.discordapp.com/attachments/721588221716201572/726668680389197914/782b8266b5ab779e02f92049d7704597.jpg')
@@ -286,8 +308,12 @@ if (message.content.toLowerCase().startsWith(prefix + "help")) {
 //SERVER
 //#1 GUILDINFO
 if (message.content.toLowerCase().startsWith(prefix + 'guildinfo')) {
+  message.delete();
   if (message.channel.id !== "684657636150345769") 
-  return message.reply('pls use <#684657636150345769> channel ! trying to keep generals clean') ;{
+  return message.reply('pls use <#684657636150345769> channel ! trying to keep generals clean')
+  .then(m => m.delete({timeout:3000}))
+  {
+   
     var GuildInfoEmbed = new Discord.MessageEmbed()
     .setColor('#7e00fc')
     .setThumbnail('https://cdn.discordapp.com/attachments/721588221716201572/725312794643267584/helpimage.png')
@@ -303,8 +329,7 @@ if (message.content.toLowerCase().startsWith(prefix + 'guildinfo')) {
     .addField("💳|ID", message.guild.id, true)
     .addField("🕕|Created On", `${message.channel.guild.createdAt.toUTCString().substr(0, 16)}`,true)
 message.channel.send({embed: GuildInfoEmbed})
-
-}
+  }
 }
   
 //#2AGREE  
@@ -406,12 +431,14 @@ if (message.content.toLowerCase().startsWith(prefix + 'purge')) {
         return;
     } else {
         if (message.member.hasPermission('MANAGE_SERVER')) {
-        var amount = args.join(' ')
+        var amount = args[0]
         if (isNaN(amount)) {
         message.reply('Please provide a number between 1 and 100.')
         return;
       };
-
+      if  (amount > 100) {
+        return message.reply ('Number less than 100 or = 100')
+      }
       if (!amount) {
       message.reply('Please provide an amount.')
     } else {
@@ -447,6 +474,7 @@ if (message.content.toLowerCase().startsWith(prefix + 'purge')) {
 } else {
   if (message.member.hasPermission('MANAGE_MESSAGES')) {
   if (message.mentions.members.size < 1) {
+    var user = message.mentions.members.first();
     var crulesembed = new Discord.MessageEmbed()
     .setAuthor(bot.user.username,message.author.displayAvatarURL())
     .setTitle('Please abide by these')
@@ -457,11 +485,12 @@ if (message.content.toLowerCase().startsWith(prefix + 'purge')) {
     .addField('#4','Got a problem! Report to <#686431099781644308> with `--report@user` and put the details needed! mods will get you')
     .setFooter('Chat rules by' + message.author.username)
     .setTimestamp()
-    message.channel.send({embed:crulesembed});
+    message.channel.send({embed:crulesembed})
+   
     message.delete();
      }
   }
-   }
+   };
  
 //#3 ----SAY COMMAND
 //embed Command\\
@@ -574,8 +603,12 @@ if (message.content.toLowerCase().startsWith(prefix + 'unmod')) {
 }; 
 
 //#c YT-ADD ----
-if (message.content.toLowerCase().startsWith(prefix + "apply") && message.guild.channels.cache.get('729940234107879464')) {
-    message.delete({timeout:1000});
+if (message.content.toLowerCase().startsWith(prefix + "apply")) {
+if (message.channel.id !== "729940234107879464") 
+  return message.reply('pls use <#729940234107879464> channel! command usage not allowed here')  
+    .then (m => m.delete({timeout :3000}));
+   
+   
     var applyembed = new Discord.MessageEmbed()
     .setColor('#3760fc')
     .setDescription(`${message.author} You applied for the <@&677432747555291148> role(**PLEASE PUT UR CHANNEL LINK TOO IF U HAVEN'T ENTERED WITH COMMAND and hope u read the requirements**) We will get back to you soon!Good Day`)
@@ -611,8 +644,10 @@ if (message.content.toLowerCase().startsWith(prefix + "ytadd" )) {
 };
 
 //#d YT+ADD -----------
-if (message.content.toLowerCase().startsWith(prefix + "yt+apply") && message.guild.channels.cache.get('729940234107879464')) {
-    message.delete({timeout:1000});
+if (message.content.toLowerCase().startsWith(prefix + "yt+apply")){
+if (message.channel.id !== "729940234107879464") 
+  return message.reply('pls use <#729940234107879464> channel! command usage not allowed here')  
+    .then (m => m.delete({timeout :3000}));
     var applyembed = new Discord.MessageEmbed()
     .setColor('#ff255e')
     .setDescription(`${message.author} You applied for the <@&712709020653322261> special role (CHANNEL LINK IS A MUST and hope u read the requirements) Management will get back to you soon!Good Day`)
@@ -648,11 +683,13 @@ if (message.content.toLowerCase().startsWith(prefix + "yt+add" )) {
 };
 
 //e)GFXADD\\
-if (message.content.toLowerCase().startsWith(prefix + "gfxapply") && message.guild.channels.cache.get('729940234107879464')) {
-    message.delete({timeout:1000});
+if (message.content.toLowerCase().startsWith(prefix + "gfxapply")){
+if (message.channel.id !== "729940234107879464") 
+  return message.reply('pls use <#729940234107879464> channel! command usage not allowed here')  
+    .then (m => m.delete({timeout :3000}));
     var applyembed = new Discord.MessageEmbed()
     .setColor('#f16798')
-    .setDescription(`${message.author} You applied for the <@&730312225692319794> special role (please give the best u made with **Dragneel** details in it) Management will get back to you soon!Good Day`)
+    .setDescription(`${message.author} You applied for the <@&730312225692319794> special role (please give the best u made with **Dragneel** details in it below) Management will get back to you soon!Good Day`)
     message.channel.send({embed:applyembed});
     var receiveembed = new Discord.MessageEmbed()
     .setColor('#ff255e')
@@ -733,6 +770,7 @@ if (message.content.toLowerCase().startsWith(prefix + "clanadd" )) {
 
 // CLAN DENIED
 if (message.content.toLowerCase().startsWith(prefix + "cdenied" )) {
+message.delete()
    if (!message.member.hasPermission("MANAGE_ROLES")) {
     return message.reply("Sorry, you don't have permissions to do this!")
     .then (m => m.delete({timeout :1500}));
@@ -741,13 +779,13 @@ if (message.content.toLowerCase().startsWith(prefix + "cdenied" )) {
   if (message.mentions.members.size < 1) {
     message.reply('Mention our  wizard first.')
   } else {
-    
-    let role = message.guild.roles.cache.get("677465656966381588");
+     var sayMessage = args.join(" ")
+   let role = message.guild.roles.cache.get("677465656966381588");
     let user = message.mentions.members.first()
-    user.roles.add(role).catch(console.error);
+    user.roles.remove(role).catch(console.error);
   var gfxembed = new Discord.MessageEmbed()
     .setColor('#f16798')
-    .setDescription(`**${user.user.username}** <@&677465656966381588> requirements were not met as per requirements mentioned in <#677560689732223027>! **please make sure the requirements are met accordingly**`)
+    .setDescription(sayMessage +` <@&677465656966381588> requirements were not met as per requirements mentioned in <#677560689732223027>! **please make to read it properly and then apply again** `)
     message.guild.channels.cache.get("729943660124176494").send(`${user.toString()}`).then(sent =>{
     sent.edit({embed:gfxembed})
    })
@@ -759,26 +797,415 @@ if (message.content.toLowerCase().startsWith(prefix + "cdenied" )) {
 
 
 //HOW TO --------------------------------------\\
-if (message.content.startsWith(prefix +'howto') 
-&& message.member.hasPermission('MANAGE_SERVER')) {
+if (message.content.toLowerCase().startsWith(prefix +'howto')) {
+   message.delete()
+ if  (message.member.hasPermission('MANAGE_SERVER'))
 var hwotoembed = new Discord.MessageEmbed()
-.setAuthor('howto for' + message.author.username)
+.setAuthor('howto by' + message.author.username)
 .setColor('#aef105')
 .setTitle('kind of info how to get these ')
 .addField(prefix + 'howto[text]',' **[text]**--`head`|`mod`|`gfx`|`clan`|`vip/royal`|`12/7support`|`partner`|`yt`|`abroaders`')
 .setFooter("aren't these special","https://cdn.discordapp.com/attachments/726134541638697042/729228707423584256/694931842486239243.gif")
 message.channel.send({embed:hwotoembed})
-message.delete();
+ .then (m => m.delete({timeout :9000}));
+
 
 };
 
-//TEXT-------------------------------------\\
+// HOW TO -TEXT-------------------------------------\\
+
+//HEAD
+if (message.content.toLowerCase().startsWith(prefix +'howhead')) {
+  message.delete()
+  var headembed =new Discord.MessageEmbed()
+  .setAuthor(bot.user.username)
+  .setTitle("How `☢│ HEAD ᴘɪʟʟᴀʀ'ꜱ〢`are taken")
+  .setColor('#aef105')
+  .addField("**HEADS**--are SERVER MANAGERS", "|How enrolled > well depends on server needs + starts when **DRAGNEEL** thinks needed| so stay tuned! keep checking announcements for staying updated")
+  .setFooter(message.author.username,message.author.displayAvatarURL())
+  .setThumbnail('https://cdn.discordapp.com/attachments/726134541638697042/729221373695754240/tenor.gif')
+  message.channel.send({embed:headembed})
+ .then (m => m.delete({timeout :9000}));
+};
+  
+// MOD
+if (message.content.toLowerCase().startsWith(prefix +'howmod')) {
+  message.delete()
+ if  (message.member.hasPermission('MANAGE_GUILD')) 
+  var modembed =new Discord.MessageEmbed()
+  .setAuthor(bot.user.username)
+  .setTitle("How `☢│ Aꜱᴛʀᴀʟ ᴍᴏᴅS 〢`are taken")
+  .setColor('#aef105')
+  .addField("** Aꜱᴛʀᴀʟ ᴍᴏᴅS **--are Server Moderators", "|How enrolled > Well giving someone MOD means trusting one like a family| `TOP chat rank holders are kept on evaluation` by **Management** so keep loving our family and u might just get that REP u want [:negative_squared_cross_mark: **Never ask for MOD randomly**- u will be given strike for free|:woozy_face: ]")
+  .setFooter(message.author.username,message.author.displayAvatarURL())
+  .setThumbnail('https://cdn.discordapp.com/attachments/726134541638697042/733207306019536977/tenor.gif')
+  message.channel.send({embed:modembed})
+ .then (m => m.delete({timeout :15000}));
+};
+
+//GFX--//
+if (message.content.toLowerCase().startsWith(prefix +'howgfx')) {
+  message.delete()
+ if  (message.member.hasPermission('MANAGE_SERVER')) 
+  var modembed =new Discord.MessageEmbed()
+  .setAuthor(bot.user.username)
+  .setTitle("How `☢ ⥑ Dragy's Artist ⥏`s selected")
+  .setColor('#aef105')
+  .addField("**Dragy's Artist **--are gfx DESIGNERS", "|How enrolled > Head over to <#729940234107879464> and just do `+gfxapply` make sure to do what's written there")
+  .setFooter(message.author.username,message.author.displayAvatarURL())
+  .setThumbnail('https://cdn.discordapp.com/attachments/726134541638697042/729228621297745990/tenor_5.gif')
+  message.channel.send({embed:modembed})
+ .then (m => m.delete({timeout :15000}));
+};
+
+//CLAN-----\\
+//--//
+if (message.content.toLowerCase().startsWith(prefix +'howclan')) {
+  message.delete()
+ if  (message.member.hasPermission('MANAGE_SERVER')) 
+  var modembed =new Discord.MessageEmbed()
+  .setAuthor(bot.user.username)
+  .setTitle("How `☢│ Cʟᴀɴ ᴡɪᴢᴀʀᴅꜱ〢`s selected")
+  .setColor('#aef105')
+  .addField("**Clan Wizards **--are Clan MemberS", "|How enrolled > Head over to <#677816256488931328> and just do `+clanapply` make sure to do what's written there | **or just watch what others did**")
+  .setFooter(message.author.username,message.author.displayAvatarURL())
+  .setThumbnail('https://cdn.discordapp.com/attachments/726134541638697042/729228621297745990/tenor_5.gif')
+  message.channel.send({embed:modembed})
+ .then (m => m.delete({timeout :15000}));
+};
+
+
+//HOW--VIP/RPYAL//--
+if (message.content.toLowerCase().startsWith(prefix +'howvip')) {
+  message.delete()
+ if  (message.member.hasPermission('MANAGE_SERVER')) 
+  var modembed =new Discord.MessageEmbed()
+  .setAuthor(bot.user.username)
+  .setTitle("How `☢│ Tʜᴇ ʀᴏʏᴀʟS 〢`s are given respect")
+  .setColor('#aef105')
+  .addField("**Royals **--are like super OP people worthy of being honoured", "|How given > Well Royals are people quite close to Dragneel | are recognised everywhere | are just vibed people")
+  .setFooter(message.author.username,message.author.displayAvatarURL())
+  .setThumbnail('https://cdn.discordapp.com/attachments/726134541638697042/733687829242314853/mavy_charmed.gif')
+  message.channel.send({embed:modembed})
+ .then (m => m.delete({timeout :15000}));
+};
+
+//HOW 12/7 SUPPORT////--
+if (message.content.toLowerCase().startsWith(prefix +'howsupport')) {
+  message.delete()
+ if  (message.member.hasPermission('MANAGE_SERVER')) 
+  var modembed =new Discord.MessageEmbed()
+  .setAuthor(bot.user.username)
+  .setTitle("How `☢│ 12/7-SupporT 〢`s are enrolled")
+  .setColor('#aef105')
+  .setDescription(` __**12/7-Support-are our  Server Support Team**__ 
+ > \`They can be  tagged  for all of ur queries about server\` -- **\`to a limit though\`**
+ > \`To Enroll Active people in almost all channels are required\`--**\`cause u have to know inside-out of server\`**
+ \`so hope u got what it takes\`--**\`if u wanna apply\`**
+ `)
+  .setFooter(message.author.username,message.author.displayAvatarURL())
+  .setThumbnail('https://cdn.discordapp.com/attachments/726134541638697042/733687835416330271/mavuu_more_happy.gif')
+  message.channel.send({embed:modembed})
+ .then (m => m.delete({timeout :10000}));
+};
+
+//HOW-PARTNER
+if (message.content.toLowerCase().startsWith(prefix +'howpartner')) {
+  message.delete()
+ if  (message.member.hasPermission('MANAGE_SERVER')) 
+  var modembed =new Discord.MessageEmbed()
+  .setAuthor(bot.user.username)
+  .setTitle("For now Dragneel doesnt want partnership")
+  .setColor('#aef105')
+  .setFooter(message.author.username,message.author.displayAvatarURL())
+  .setThumbnail('https://cdn.discordapp.com/attachments/726134541638697042/733688140090441748/wat_the_hell.gif')
+  message.channel.send({embed:modembed})
+ .then (m => m.delete({timeout :3000}));
+};
+
+//HOWYT---
+if (message.content.toLowerCase().startsWith(prefix +'howyt')) {
+  message.delete()
+ if  (message.member.hasPermission('MANAGE_GUILD')) 
+  var modembed =new Discord.MessageEmbed()
+  .setAuthor(bot.user.username)
+  .setTitle(" How `☢│ Yᴏᴜᴛᴜʙᴇʀꜱ 〢`|`☢│ Fᴀᴍᴇᴅ ʏᴏᴜᴛᴜʙᴇʀS 〢`Get their REP in our home")
+  .setColor('#aef105')
+  .setDescription(`
+ __**Famed-Youtubers**__ 
+ > \`Having Fame of 100k+ YT Subs\` > **\`Please have your channel link- head to <channel-below> and just type in +yt+apply and do put ur CHANNEL LINK TOO| u will be getting a ping when u are given our special love- i mean rank\`**
+  __**Youtubers**__
+  > \`Having YT Subs- 10K+\` > **\`Aye sir Growing ones are more op-> have ur channel link -> head to <channel-below> type in +apply and put ur link|Have a cheerful day \`**
+ `)
+ .addField('channel','<#729940234107879464>')
+  .setFooter(message.author.username,message.author.displayAvatarURL())
+  .setThumbnail('https://cdn.discordapp.com/attachments/726134541638697042/734226748849520690/ram_ram.gif')
+  message.channel.send({embed:modembed})
+ .then (m => m.delete({timeout :20000}));
+};
+
+//HOW-ABRoAD//--
+if (message.content.toLowerCase().startsWith(prefix +'howabroad')) {
+  message.delete()
+ if  (message.member.hasPermission('MANAGE_SERVER')) 
+  var modembed =new Discord.MessageEmbed()
+  .setAuthor(bot.user.username)
+  .setTitle("How `☢│ AʙʀᴏᴀᴅᴇʀS 〢` role is given ")
+  .setColor('#aef105')
+  .setDescription(`__**Abroaders- Other servers MODS/ADMINS**__
+  > \`Server \` > **\`Must be a Server of 10K+ MEMBERS \`**
+  > \`Ξ| well i dont mind if i don't even get the least amount of respect u can give  \`- **\`But my MODS and ADMINS are very precious to me \`**
+  > \`Ξ| so if u wish to get the special role here , my family should get the same respect in your HOME SERVER \``)
+  .setFooter(message.author.username,message.author.displayAvatarURL())
+  .setThumbnail('https://cdn.discordapp.com/attachments/726134541638697042/733688140090441748/wat_the_hell.gif')
+  message.channel.send({embed:modembed})
+ .then (m => m.delete({timeout :20000}));
+};
+
+
+//MODERATION COMMANDS\\-------
+
+const modlog = message.guild.channels.cache.get('728635890561187881');
+const cmdlog = message.guild.channels.cache.get('735390300230516807');
 
 
 
 
+//1)+WARN-----
+var reason = args.slice(1).join(' ');
+var msguser = message.mentions.members.first();
+if(message.content.startsWith(prefix + `warn`)) {
+if(!message.member.hasPermission(`KICK_MEMBERS`)) return message.reply(`Don't be dumb please leave warn and all to mods!`);
+  if (!reason) {
+  return message.channel.send(`Please Provide a reason in order to warn.e.g - \`${config.prefix}warn <user> <reason>\``)
+}
+if (!msguser) {
+  return message.reply("Please @mention a valid wizard of this Guild");
+}
+var guild = message.guild;
+var warnEmbed = new Discord.MessageEmbed()
+.setColor('#c7c5c5')
+.setDescription(`<a:emoji_96:725928974877720677> **Wizard \`${msguser.user.username}\`   has been warned for**-- **\`${ reason}\`**!. `)
+message.channel.send(warnEmbed)
+message.delete()
+{
+var dmwarnembed = new Discord.MessageEmbed()
+.setDescription(`**You have been warned in** \`${message.guild.name}\` for \`${reason}\`! `)
+msguser.send({embed:dmwarnembed}) }
+ {
+  var reasonembed = new Discord.MessageEmbed()
+      .addField('Action', 'Warn',true)
+      .addField('Moderator', message.author.tag,true)
+      .addField('Reason', "`" + reason + "`",true)
+      .addField('whom',msguser.user.tag,true)
+      .setFooter('User warned ' + new Date())
+      .setColor('#c7c5c5');
+      modlog.send({embed:reasonembed})
+  } {
+     var cmduseembed = new Discord.MessageEmbed()
+     .addField('Action','warn',true)
+     .addField('Moderator',message.author.tag,true)
+     .setColor('#c7c5c5')
+     .setFooter('used at')
+     .setTimestamp()
+     cmdlog.send({embed:cmduseembed})
+  } 
+}
 
+//unwarn\\
+var unreason = args.slice(1).join(' ');
 
+var msguser = message.mentions.members.first();
+if(message.content.startsWith(prefix + `unwarn`)) {
+if(!message.member.hasPermission(`KICK_MEMBERS`)) return message.reply(`You do not have the permissions!`);
+  if (!unreason) {
+  return message.channel.send(`Please Provide a reason in order to unwarn.e.g - \`${config.prefix}unwarn <user> <reason>\``)
+}
+var guild = message.guild;
+var unwarnEmbed = new Discord.MessageEmbed()
+.setColor(`BLUE`)
+.setDescription(`<a:emoji_96:725928974877720677> **Wizard    has been UNwarned for**-- **\`${ reason}\`**!. ` )
+message.channel.send(unwarnEmbed)
+message.delete()
+
+var dmembed = new Discord.MessageEmbed()
+.setColor('GREEN')
+.setDescription(`**You have been unwarned from **\`${message.author.tag}\` in \`${message.guild.name}\` for \`${unreason}\`!`)
+msguser.send({embed:dmembed})  
+{
+     var cmduseembed = new Discord.MessageEmbed()
+     .addField('Action','UNwarn',true)
+     .addField('Moderator',message.author.tag,true)
+     .setColor('GREEN')
+     .setFooter('used at')
+     .setTimestamp()
+     cmdlog.send({embed:cmduseembed})
+  }
+
+};
+ 
+ //KICK----
+if (message.content.toLowerCase().startsWith(prefix + 'kick')) {
+    if (!message.member.hasPermission("KICK_MEMBERS")) {
+    return message.reply("Not having perms, still trying to kick someone | **;(**");
+}
+
+var member = message.mentions.members.first();
+if (!modlog) {
+   return message.reply ("well my logging channel maybe i lost my way")
+}
+  if (!member) {
+  return message.reply("umm @mention should be of a valid wizard of our guild");
+}
+  if (!member.kickable) {
+  return message.reply("deng this role might be higher,do i have kick perm? |can't kick the user")
+  .then (m => m.delete({timeout :6000}));
+}
+
+var reason = args.slice(1).join(' ');
+
+  if (!reason) {
+  member.kick(`No Reason - by ${message.author}`)
+  .catch(error => message.reply(`Sorry ${message.author} couldn't  be kicked cause : ${error}`));
+  message.channel.send ({
+    embed: {
+      color: "#c7c5c5",
+      description: `**${member} was Kicked| 🦶 | no reason given**`,
+    }
+  })
+   message.delete()
+  } else {
+  member.send ({
+    embed:{
+      color: "BLACK",
+      description: 'You have been kicked for ' + "`" + reason + "`" + ` from ${message.guild.name}  if you think you where kicked by mistake please contact **Support Team**.`,
+    }
+    }).catch(error => message.channel.send(`⚠ Unable to alert ${member} of reason \`${error}\`.`)).then (message => {
+      member.kick(`${reason} - On command of ${message.author}`)
+  .catch(error => message.reply(`sollie ${message.author} couldn't kick maybe cause ${error}`));
+ member.send ({
+      embed: {
+        color: "#c7c5c5",
+        description:"You have been kicked for " + "`" + reason + "`" + " from `Dragneel's Server`. if you think you were kicked by mistake please contact **Support Team**.",    
+      }
+      }).catch(error => console.log(error))
+    message.delete({timeout:5000})
+  })
+  message.delete()
+  } 
+
+  message.channel.send ({
+      embed: {
+        color: "#c7c5c5",
+        description:`matanee ${member} | 🍳  kicked cause => \`${reason}\`!`,    
+      }
+
+  }).catch(error => message.channel.send(error))
+ {
+        var reasonembed = new Discord.MessageEmbed()
+            .addField('Action', 'KICK', true)
+            .addField('Moderator', message.author.tag, true)
+            .addField('Reason', "`" + reason + "`", true)
+            .addField('whom',member.user.tag,true)
+            .setFooter('User kicked ' + new Date())
+            .setColor('#c7c5c5');
+        modlog.send({
+            embed: reasonembed
+        })
+    } {
+        var cmdembed = new Discord.MessageEmbed()
+            .addField('Action', 'KICK', true)
+            .addField('Moderator', message.author.tag, true)
+            .setColor('#c7c5c5')
+            .setFooter('used at')
+            .setTimestamp()
+        cmdlog.send({
+            embed: cmdembed
+        })
+    }
+};    
+  
+ //BAN
+ 
+ if (message.content.toLowerCase().startsWith(prefix + 'ban')) {
+    if (!message.member.hasPermission("BAN_MEMBERS")) {
+    return message.reply("Not having perms, still trying to kick someone | **;(**");
+}
+
+var member = message.mentions.members.first();
+if (!modlog) {
+   return message.reply ("well my logging channel maybe i lost my way")
+}
+  if (!member) {
+  return message.reply("umm @mention should be of a valid wizard of our guild");
+}
+  if (!member.kickable) {
+  return message.reply("deng this role might be higher,do i have kick perm? |can't kick the user")
+  .then (m => m.delete({timeout :6000}));
+}
+
+var reason = args.slice(1).join(' ');
+
+  if (!reason) {
+  member.kick(`No Reason - by ${message.author}`)
+  .catch(error => message.reply(`Sorry ${message.author} couldn't  be banned cause : ${error}`));
+  message.channel.send ({
+    embed: {
+      color: "#c7c5c5",
+      description: `**${member} was|🍳|  Banned| no reason given**`,
+    }
+  })
+   message.delete()
+  } else {
+  member.send ({
+    embed:{
+      color: "BLACK",
+      description: 'You have been banned for ' + "`" + reason + "`" + ` from ${message.guild.name}  if you think you where banned by mistake please contact **Support Team**.`,
+    }
+    }).catch(error => message.channel.send(`⚠ Unable to alert ${member} of reason \`${error}\`.`)).then (message => {
+      member.kick(`${reason} - On command of ${message.author}`)
+  .catch(error => message.reply(`sollie ${message.author} couldn't kick maybe cause ${error}`));
+ member.send ({
+      embed: {
+        color: "#c7c5c5",
+        description:"You have been banned for " + "`" + reason + "`" + " from `Dragneel's Server`. if you think you were banned by mistake please contact **Support Team**.",    
+      }
+      }).catch(error => console.log(error))
+    message.delete({timeout:5000})
+  })
+  message.delete()
+  } 
+
+  message.channel.send ({
+      embed: {
+        color: "#c7c5c5",
+        description:`matanee ${member} | 🍳  Banned cause => \`${reason}\`!`,    
+      }
+
+  }).catch(error => message.channel.send(error))
+ {
+        var reasonembed = new Discord.MessageEmbed()
+            .addField('Action', 'BAN', true)
+            .addField('Moderator', message.author.tag, true)
+            .addField('Reason', "`" + reason + "`", true)
+            .addField('whom',member.user.tag,true)
+            .setFooter('User kicked ' + new Date())
+            .setColor('#c7c5c5');
+        modlog.send({
+            embed: reasonembed
+        })
+    } {
+        var cmdembed = new Discord.MessageEmbed()
+            .addField('Action', 'BAN', true)
+            .addField('Moderator', message.author.tag, true)
+            .setColor('#c7c5c5')
+            .setFooter('used at')
+            .setTimestamp()
+        cmdlog.send({
+            embed: cmdembed
+        })
+    }
+};    
 
   //Eval command\\
 if (message.content.toLowerCase().startsWith(prefix + 'eval')) {
@@ -811,7 +1238,7 @@ if (message.content.toLowerCase().startsWith(prefix + 'eval')) {
 };
 };
   
-  if (message.content === 'prefix ' || message.content === 'kawai prefix') {
+  if (message.content === 'prefix ' || message.content === 'vermi prefix') {
   message.channel.send('My prefix is **' + prefix + '**.')
 };
   
@@ -849,16 +1276,13 @@ message.member.roles.add(memberRole).catch(console.error);
 message.delete()
 };
   
- 
-  
- 
-  
-  //VVPing Command\\
-if (message.content.toLowerCase().startsWith(prefix + 'vping')) {
- if (!message.member.hasPermission("MANAGE SERVER")){
+ //VPING//
+ if (message.content.toLowerCase().startsWith(prefix+'vping')) {
+   message.delete()
+ if (!message.member.hasPermission("MANAGE_MANAGES")){
     return;
   } else {
-    if  (message.member.hasPermission('MANAGE SERVER')){
+    if  (message.member.hasPermission('MANAGE_MESSAGES')){
       if (message.mentions.members.size < 1)
   var pingEmbed = new Discord.MessageEmbed()
   .setColor("RANDOM")
@@ -872,7 +1296,21 @@ if (message.content.toLowerCase().startsWith(prefix + 'vping')) {
    .then (m => m.delete({timeout :3000}))
    }
   }
-  }                                      
+  }
+
+  //Avatar Command\\
+if (message.content.toLowerCase().startsWith(prefix + 'avatar')) {
+    var avatarEmbed = new Discord.MessageEmbed()
+    .setColor('BLUE')
+    .setAuthor(bot.user.username)
+    .setDescription('Here is ' + message.author.tag + ' avatar.')
+    .setImage(message.author.displayAvatarURL);
+message.channel.send({embed: avatarEmbed});
+};
+ 
+  
+  
+                                      
 
  //ping
  if (message.content.toLowerCase().startsWith(prefix + 'ping')) {
@@ -891,7 +1329,7 @@ if (message.content.toLowerCase().startsWith(prefix + 'vping')) {
   }
  //uptime 
 if (message.content.toLowerCase().startsWith(prefix + "uptime")) {
-    message.channel.send(`**kawai chan** was last restarted **${(bot.uptime / 60000).toFixed(0)} minutes** ago!`)
+    message.channel.send(`**Mavis vermilion** was last awakened **${(bot.uptime / 60000).toFixed(0)} minutes** ago!`)
    }
   
  
@@ -899,7 +1337,7 @@ if (message.content.toLowerCase().startsWith(prefix + "uptime")) {
   
   
   
-  
+ 
   
 } ) ;
 
