@@ -54,7 +54,7 @@ bot.on("ready", () => {
 
    console.log("konichiwaa!");
   
-bot.user.setActivity(` sad days,no discording T_T`, {
+bot.user.setActivity(` sad days,no discord T_T`, {
   type: "STREAMING",
   url:"https://www.twitch.tv/."}); 
 });
