@@ -51,7 +51,7 @@ var parseTime = function (milliseconds) {
 };
 
 bot.on("ready", () => {
-<<<<<<< HEAD
+
    console.log("konichiwaa!");
   
 bot.user.setActivity(` sad days,no discording T_T`, {
@@ -63,20 +63,8 @@ bot.on("error", error => {
     console.log(error);
 });
 
-=======
-  console.log("konichiwaa!");
->>>>>>> origin/master
 
-  bot.user.setActivity(`sad days no  T_T`, {
-    type: "STREAMING",
-    url: "https://www.twitch.tv/.",
-  });
-});
-
-bot.on("error", (error) => {
-  console.log(error);
-});
-
+ 
 //Message Event\\
 bot.on("message", (message) => {
   const args = message.content.slice(prefix.length).trim().split(/ +/g);
@@ -97,7 +85,6 @@ bot.on("message", (message) => {
     );
   }
 
-<<<<<<< HEAD
     
 //RELOAD  
  if(message.content.toLowerCase().startsWith(prefix + "reload")){
@@ -110,22 +97,9 @@ bot.on("message", (message) => {
       api = reload('./vermi.js');
       try {
           api = reload('./vermi.js');
-=======
-  if (message.content.toLowerCase().startsWith(prefix + "reload")) {
-    if (message.author.id !== config.owner) {
-      message.reply(`you have no perms for this command!`);
-      return;
-    }
-    if (message.author.id == config.owner) {
-      var reload = require("require-reload")(require),
-        api = reload("./mybot.js");
-      try {
-        api = reload("./mybot.js");
->>>>>>> origin/master
       } catch (e) {
         console.error("Failed to reload bot! Error: ", e);
       }
-<<<<<<< HEAD
     message.channel.send('reloading my main...').then(sent =>{
     sent.edit('This is tiring')
 });
@@ -164,21 +138,6 @@ message.channel.send({embed: InfoEmbed});
     const guildNames = bot.guilds.cache.map(g => g.name).join("\n")
     message.channel.send('**' + bot.user.username + '\'s Guilds.**\n ```' + guildNames + '```')
 }; 
-=======
-      message.channel.send("reloading my main...").then((sent) => {
-        sent.edit("This is tiring");
-      });
-      var pingEmbed = new Discord.MessageEmbed()
-        .setColor("BLUE")
-        .setAuthor(`${bot.user.username}`)
-        .setDescription(
-          "**`mybot.js` has be reloaded! dragy no errorsfound, all refreshed**"
-        );
-      message.channel.send(pingEmbed);
-      return;
-    }
-  }
->>>>>>> origin/master
 
   //Help Command\\
   if (message.content.toLowerCase().startsWith(prefix + "help")) {
@@ -398,7 +357,6 @@ message.channel.send({embed: InfoEmbed});
       .send({ embed: botembed })
       .then((m) => m.delete({ timeout: 1500 }));
     var bot2embed = new Discord.MessageEmbed()
-<<<<<<< HEAD
     .setAuthor('info cmd of '+ bot.user.username)
     .setColor('#ee09b8')
     .setTitle('Use of cmd is prohibited in general channels')
@@ -409,20 +367,6 @@ message.channel.send({embed: InfoEmbed});
     .setThumbnail('https://cdn.discordapp.com/attachments/721588221716201572/726668680389197914/782b8266b5ab779e02f92049d7704597.jpg')
     .setFooter(message.author.username,message.author.displayAvatarURL())
     message.author.send({embed:bot2embed});
-=======
-      .setAuthor("info cmd of " + bot.user.username)
-      .setColor("#ee09b8")
-      .setTitle("Use of cmd is prohibited in general channels")
-      .setDescription("use CMD in  <#684657636150345769> channel")
-      .addField(prefix + "botinfo", "--Miss vermi info", true)
-      .addField(prefix + "ping", "-- ping of vermi", true)
-      .addField(prefix + "uptime", "--Gets u the uptime of bot")
-      .setThumbnail(
-        "https://cdn.discordapp.com/attachments/721588221716201572/726668680389197914/782b8266b5ab779e02f92049d7704597.jpg"
-      )
-      .setFooter(message.author.username, message.author.displayAvatarURL());
-    message.author.send({ embed: bot2embed });
->>>>>>> origin/master
     message.delete();
   }
 
@@ -443,7 +387,6 @@ message.channel.send({embed: InfoEmbed});
       .setFooter(message.author.username, message.author.displayAvatarURL());
     message.author.send({ embed: genreembed });
     message.delete();
-<<<<<<< HEAD
     
    }
 
@@ -496,70 +439,6 @@ message.delete()
                 }
 
 //rules
-=======
-  }
-
-  //MAIN COMMAND START FROM HERE
-
-  //SERVER
-  //#1 GUILDINFO
-  if (message.content.toLowerCase().startsWith(prefix + "guildinfo")) {
-    if (message.channel.id !== "684657636150345769")
-      return message.reply(
-        "pls use <#684657636150345769> channel ! trying to keep generals clean"
-      );
-    {
-      var GuildInfoEmbed = new Discord.MessageEmbed()
-        .setColor("#7e00fc")
-        .setThumbnail(
-          "https://cdn.discordapp.com/attachments/721588221716201572/725312794643267584/helpimage.png"
-        )
-        .setTitle(message.guild.name + " Info")
-        .setDescription(
-          "Guild: **Feary Wizards** aKa **DragneeL's Home**:- PUBGM LITE clan striving to become the best and this server is their home; where we love getting new wizards ,cause we love you ! Hope u like us too, enjoy and have FUN."
-        )
-        .addField("🖍|Name", message.guild.name, true)
-        .addField("👤|Owner", message.guild.owner, true)
-        .addField("🌍|Region", message.guild.region, true)
-        .addField("🛡|Verification level", message.guild.verificationLevel, true)
-        .addField("👥|Members", message.guild.memberCount, true)
-        .addField("📡|Channels", message.guild.channels.cache.size, true)
-        .addField("🎭|Roles", message.guild.roles.cache.size, true)
-        .addField("💳|ID", message.guild.id, true)
-        .addField(
-          "🕕|Created On",
-          `${message.channel.guild.createdAt.toUTCString().substr(0, 16)}`,
-          true
-        );
-      message.channel.send({ embed: GuildInfoEmbed });
-    }
-  }
-
-  //#2AGREE
-  if (message.content.toLowerCase().startsWith(prefix + "agree")) {
-    let memberRole = message.guild.roles.cache.find(
-      (r) => r.name === "Verified wizard"
-    );
-    message.member.roles.add(memberRole).catch(console.error);
-    message.delete();
-  }
-
-  //#3invite
-  if (message.content.startsWith(prefix + "invite")) {
-    const inviteembed = new Discord.MessageEmbed()
-      .setColor("#52fc03")
-      .setAuthor(bot.user.username, bot.user.displayAvatarURL())
-      .setTitle("📥|Dragy's invite letter!")
-      .setDescription("https://discord.gg/G35CMMj")
-      .setFooter(
-        "Dragy nub dev",
-        "https://cdn.discordapp.com/attachments/720837151926911026/721533324136284172/circle_best_logo.png"
-      );
-    message.channel.send(inviteembed);
-  }
-
-  //rules
->>>>>>> origin/master
 
   if (message.content.toLowerCase().startsWith(prefix + "rules")) {
     var rulesembed = new Discord.MessageEmbed()
@@ -731,7 +610,6 @@ message.delete()
       );
       return;
     } else {
-<<<<<<< HEAD
         if (message.member.hasPermission('MANAGE_SERVER')) {
         var amount = args[0]
         if (isNaN(amount)) {
@@ -754,12 +632,6 @@ message.delete()
     .addField('Nuked Channel', message.channel.name);
     if (!message.guild.channels.cache.get("728635890561187881")) {
         message.channel.send("**I couldn't find my `logs` channel,so umm make one.**")
-=======
-      if (message.member.hasPermission("MANAGE_SERVER")) {
-        var amount = args.join(" ");
-        if (isNaN(amount)) {
-          message.reply("Please provide a number between 1 and 100.");
->>>>>>> origin/master
           return;
         }
 
@@ -786,7 +658,7 @@ message.delete()
             return;
           }
         }
-      } else {
+      }  {
         message.channel.send("nope  don't have the perms to do that");
         message.guild.owner.send(
           `${message.author} tried to use \`nuke command\``
@@ -794,6 +666,7 @@ message.delete()
       }
     }
   }
+};
 
   //#2 crules
   if (message.content.toLowerCase().startsWith(prefix + "crules"))
@@ -845,7 +718,6 @@ message.delete()
       }
     }
 
-<<<<<<< HEAD
 //#2 crules
  if (message.content.toLowerCase().startsWith(prefix +'crules'))
     if (!message.member.hasPermission("MANAGE_MESSAGES")) {
@@ -905,23 +777,6 @@ message.delete();
 
 //norm say\\----------
   if (message.content.toLowerCase().startsWith (prefix + 'vsay')) {
-=======
-  //SAY COMMAND\\------------------------
-  if (
-    message.content.startsWith(prefix + "say") &&
-    ["672695020100386846"].includes(message.author.id)
-  ) {
-    let channel = message.mentions.channels.first();
-    if (!channel) channel = message.channel;
-    let content = args.join(" ");
-    if (channel) content = args.slice(1).join(" ");
-    return channel.send(content);
-    message.delete();
-  }
-
-  //norm say\\----------
-  if (message.content.toLowerCase().startsWith(prefix + "vsay")) {
->>>>>>> origin/master
     if (!message.member.hasPermission("ADMINISTRATOR")) {
       return;
     } else {
@@ -956,7 +811,6 @@ message.delete();
     message.delete();
   }
 
-<<<<<<< HEAD
 //#c YT-ADD ----
 if (message.content.toLowerCase().startsWith(prefix + "apply")) {
 if (message.channel.id !== "729940234107879464") 
@@ -1003,80 +857,6 @@ if (message.content.toLowerCase().startsWith(prefix + "yt+apply")){
 if (message.channel.id !== "729940234107879464") 
   return message.reply('pls use <#729940234107879464> channel! command usage not allowed here')  
     .then (m => m.delete({timeout :3000}));
-=======
-  //#a)addmod Command\\
-  if (message.content.toLowerCase().startsWith(prefix + "addmod")) {
-    if (!message.member.hasPermission("MANAGE_ROLES")) {
-      return message
-        .reply("Sorry, you don't have permissions to do this!")
-        .then((m) => m.delete({ timeout: 1500 }));
-    } else {
-      if (message.member.hasPermission("MANAGE_ROLES")) {
-        if (message.mentions.members.size < 1) {
-          message.reply("Mention our OP wizard,for this trusted role.");
-        } else {
-          var msg = message.mentions.members.first();
-          const trustRole = message.guild.roles.cache.get("677432747958075392");
-          msg.roles.add(trustRole).catch(console.error);
-          var trustEmbed = new Discord.MessageEmbed()
-            .setAuthor(msg.user.username, msg.user.avatarURL)
-            .setColor("#4ed333")
-            .setDescription(
-              "<a:emoji_96:725928974877720677> " +
-                msg.user.tag +
-                " is now trusted new mod, OP!"
-            )
-            .setFooter(
-              "Be Careful people",
-              "https://cdn.discordapp.com/attachments/726134541638697042/726136863605391420/8375_siren_blue.gif"
-            );
-          message.channel
-            .send({ embed: trustEmbed })
-            .then((m) => m.delete({ timeout: 5000 }));
-          message.delete();
-        }
-      }
-    }
-  }
-
-  //#b)unmod Command\\
-  if (message.content.toLowerCase().startsWith(prefix + "unmod")) {
-    if (!message.member.hasPermission("MANAGE_ROLES")) {
-      return message
-        .reply("Sorry, permissions aint yours!")
-        .then((m) => m.delete({ timeout: 1500 }));
-    } else {
-      if (message.member.hasPermission("MANAGE_ROLES")) {
-        if (message.mentions.members.size < 1) {
-          message.reply("Please provide a member to unmod.");
-        } else {
-          var msg = message.mentions.members.first();
-          const trustRole = message.guild.roles.cache.get("677432747958075392");
-          msg.roles.remove(trustRole);
-          var untrustEmbed = new Discord.MessageEmbed()
-            .setAuthor(msg.user.username, msg.user.avatarURL)
-            .setColor("#ff4040")
-            .setDescription(
-              ":x: " +
-                msg.user.tag +
-                " is now demoted,Thanks for all u did :heart:"
-            );
-          message.channel
-            .send({ embed: untrustEmbed })
-            .then((m) => m.delete({ timeout: 2500 }));
-          message.delete();
-        }
-      }
-    }
-  }
-
-  //#c YT-ADD ----
-  if (
-    message.content.toLowerCase().startsWith(prefix + "apply") &&
-    message.guild.channels.cache.get("729940234107879464")
-  ) {
-    message.delete({ timeout: 1000 });
->>>>>>> origin/master
     var applyembed = new Discord.MessageEmbed()
       .setColor("#3760fc")
       .setDescription(
@@ -1093,7 +873,6 @@ if (message.channel.id !== "729940234107879464")
       .send({ embed: receiveembed });
   }
 
-<<<<<<< HEAD
 //e)GFXADD\\
 if (message.content.toLowerCase().startsWith(prefix + "gfxapply")){
 if (message.channel.id !== "729940234107879464") 
@@ -1103,49 +882,6 @@ if (message.channel.id !== "729940234107879464")
     .setColor('#f16798')
     .setDescription(`${message.author} You applied for the <@&730312225692319794> special role (please give the best u made with **Dragneel** details in it below) Management will get back to you soon!Good Day`)
     message.channel.send({embed:applyembed});
-=======
-  if (message.content.toLowerCase().startsWith(prefix + "ytadd")) {
-    if (!message.member.hasPermission("MANAGE_ROLES")) {
-      return message
-        .reply("Sorry, you don't have permissions to do this!")
-        .then((m) => m.delete({ timeout: 1500 }));
-    } else {
-      if (message.member.hasPermission("MANAGE_ROLES")) {
-        if (message.mentions.members.size < 1) {
-          message.reply("Mention our OP wizard,for this trusted role.");
-        } else {
-          let role = message.guild.roles.cache.get("677432747555291148");
-          let user = message.mentions.members.first();
-          user.roles.add(role).catch(console.error);
-          var ytembed = new Discord.MessageEmbed()
-            .setColor("#3760fc")
-            .setDescription(
-              `**${user.user.username}** You have been accepted, congrats on getting the <@&677432747555291148> role! make sure u ask ur perks `
-            );
-          message.guild.channels.cache
-            .get("729943660124176494")
-            .send(`${user.toString()}`)
-            .then((sent) => {
-              sent.edit({ embed: ytembed });
-            });
-        }
-      }
-    }
-  }
-
-  //#d YT+ADD -----------
-  if (
-    message.content.toLowerCase().startsWith(prefix + "yt+apply") &&
-    message.guild.channels.cache.get("729940234107879464")
-  ) {
-    message.delete({ timeout: 1000 });
-    var applyembed = new Discord.MessageEmbed()
-      .setColor("#ff255e")
-      .setDescription(
-        `${message.author} You applied for the <@&712709020653322261> special role (CHANNEL LINK IS A MUST and hope u read the requirements) Management will get back to you soon!Good Day`
-      );
-    message.channel.send({ embed: applyembed });
->>>>>>> origin/master
     var receiveembed = new Discord.MessageEmbed()
       .setColor("#ff255e")
       .setDescription(
@@ -1253,7 +989,6 @@ if (message.channel.id !== "729940234107879464")
   __**Now after that please include Your GAME STATS PIC RIGHT BELOW**__`);
     message.channel.send({ embed: applyembed });
     var receiveembed = new Discord.MessageEmbed()
-<<<<<<< HEAD
     .setColor('#02e29f')
     .setDescription(`**${message.author}** just applied for the <@&677465656966381588> **Special rank**!Would be very helpful if **Management** Please Filter out the applicants stats according to the requirements`)
     message.guild.channels.cache.get("732091739736899655").send({embed: receiveembed} );
@@ -1476,75 +1211,6 @@ if (message.content.toLowerCase().startsWith(prefix +'howabroad')) {
   message.channel.send({embed:modembed})
  .then (m => m.delete({timeout :20000}));
 };
-=======
-      .setColor("#02e29f")
-      .setDescription(
-        `**${message.author}** just applied for the <@&677465656966381588> **Special rank**!Would be very helpful if **Management** Please Filter out the applicants stats according to the requirements`
-      );
-    message.guild.channels.cache
-      .get("732091739736899655")
-      .send({ embed: receiveembed });
-  }
-  // CLAN SELECTED
-  if (message.content.toLowerCase().startsWith(prefix + "clanadd")) {
-    if (!message.member.hasPermission("ADMINISTRATOR")) {
-      return message
-        .reply("Sorry, you don't have permissions to do this!")
-        .then((m) => m.delete({ timeout: 1500 }));
-    } else {
-      if (message.member.hasPermission("ADMINISTRATOR")) {
-        if (message.mentions.members.size < 1) {
-          message.reply("Mention our OP wizard,for this trusted role.");
-        } else {
-          let role = message.guild.roles.cache.get("677465656966381588");
-          let user = message.mentions.members.first();
-          user.roles.add(role).catch(console.error);
-          var gfxembed = new Discord.MessageEmbed()
-            .setColor("#f16798")
-            .setDescription(
-              `**${user.user.username}** <@&677465656966381588> role AND  ur application for joining **FEARY WIZARDS**  has been accepted ! Quite close to us now, u are ! **PLease send ur ingame ID in the <#702700849683628134>**  and tag** Dragneel** ,so we can add you `
-            );
-          message.guild.channels.cache
-            .get("729943660124176494")
-            .send(`${user.toString()}`)
-            .then((sent) => {
-              sent.edit({ embed: gfxembed });
-            });
-        }
-      }
-    }
-  }
-
-  // CLAN DENIED
-  if (message.content.toLowerCase().startsWith(prefix + "cdenied")) {
-    if (!message.member.hasPermission("MANAGE_ROLES")) {
-      return message
-        .reply("Sorry, you don't have permissions to do this!")
-        .then((m) => m.delete({ timeout: 1500 }));
-    } else {
-      if (message.member.hasPermission("MANAGE_ROLES")) {
-        if (message.mentions.members.size < 1) {
-          message.reply("Mention our  wizard first.");
-        } else {
-          let role = message.guild.roles.cache.get("677465656966381588");
-          let user = message.mentions.members.first();
-          user.roles.add(role).catch(console.error);
-          var gfxembed = new Discord.MessageEmbed()
-            .setColor("#f16798")
-            .setDescription(
-              `**${user.user.username}** <@&677465656966381588> requirements were not met as per requirements mentioned in <#677560689732223027>! **please make sure the requirements are met accordingly**`
-            );
-          message.guild.channels.cache
-            .get("729943660124176494")
-            .send(`${user.toString()}`)
-            .then((sent) => {
-              sent.edit({ embed: gfxembed });
-            });
-        }
-      }
-    }
-  }
->>>>>>> origin/master
 
   //HOW TO --------------------------------------\\
   if (
@@ -1567,7 +1233,6 @@ if (message.content.toLowerCase().startsWith(prefix +'howabroad')) {
     message.delete();
   }
 
-<<<<<<< HEAD
 //MODERATION COMMANDS\\-------
 
 const modlog = message.guild.channels.cache.get('728635890561187881');
@@ -1811,9 +1476,6 @@ var reason = args.slice(1).join(' ');
         })
     }
 };    
-=======
-  //TEXT-------------------------------------\\
->>>>>>> origin/master
 
   //Eval command\\
   if (message.content.toLowerCase().startsWith(prefix + "eval")) {
@@ -1838,7 +1500,6 @@ var reason = args.slice(1).join(' ');
         var errEmbed = new Discord.MessageEmbed()
           .setColor("RED")
           .setAuthor(bot.user.username, bot.user.avatarURL)
-<<<<<<< HEAD
           .setTitle('Error!')
           .setDescription(`\`\`\`xl\n${clean(err)}\n\`\`\``)
         message.channel.send({embed: errEmbed});
@@ -1860,13 +1521,6 @@ var reason = args.slice(1).join(' ');
    }
  }
      }
-=======
-          .setTitle("Error!")
-          .setDescription(`\`\`\`xl\n${clean(err)}\n\`\`\``);
-        message.channel.send({ embed: errEmbed });
-      }
-    }
->>>>>>> origin/master
   }
 
   if (message.content === "prefix " || message.content === "kawai prefix") {
@@ -1900,7 +1554,6 @@ var reason = args.slice(1).join(' ');
   };
 
   //Join Command\\
-<<<<<<< HEAD
 if (message.content.toLowerCase().startsWith(prefix + 'agree')) {
   let memberRole = message.guild.roles.cache.find(r => r.name === "Verified wizard");
 message.member.roles.add(memberRole).catch(console.error);
@@ -1961,8 +1614,8 @@ message.channel.send({embed: avatarEmbed});
  //uptime 
 if (message.content.toLowerCase().startsWith(prefix + "uptime")) {
     message.channel.send(`**Mavis vermilion** was last awakened **${(bot.uptime / 60000).toFixed(0)} minutes** ago!`)
-   }
-  
+   };
+
  
   
   
@@ -1970,16 +1623,7 @@ if (message.content.toLowerCase().startsWith(prefix + "uptime")) {
   
  
   
-} ) ;
-=======
-  if (message.content.toLowerCase().startsWith(prefix + "agree")) {
-    let memberRole = message.guild.roles.cache.find(
-      (r) => r.name === "Verified wizard"
-    );
-    message.member.roles.add(memberRole).catch(console.error);
-    message.delete();
-  }
->>>>>>> origin/master
+
 
   //VVPing Command\\
   if (message.content.toLowerCase().startsWith(prefix + "vping")) {
@@ -2037,6 +1681,6 @@ if (message.content.toLowerCase().startsWith(prefix + "uptime")) {
       )} minutes** ago!`
     );
   }
-});
+  });
 
 bot.login(token);
