@@ -21,7 +21,7 @@ const Discord = require("discord.js");
 const bot = new Discord.Client();
 const config = require("./config.json");
 const token = process.env.BOT_TOKEN;
-const prefix = config.prefix;
+const prefix = config.PREFIX;
 const owner = config.owner;
 const dev = config.piggy;
 const superagent = require("superagent");
@@ -1625,62 +1625,7 @@ if (message.content.toLowerCase().startsWith(prefix + "uptime")) {
   
 
 
-  //VVPing Command\\
-  if (message.content.toLowerCase().startsWith(prefix + "vping")) {
-    if (!message.member.hasPermission("MANAGE SERVER")) {
-      return;
-    } else {
-      if (message.member.hasPermission("MANAGE SERVER")) {
-        if (message.mentions.members.size < 1)
-          var pingEmbed = new Discord.MessageEmbed()
-            .setColor("RANDOM")
-            .setTitle("!PONG")
-            .addField(
-              "📶|Latency",
-              `${new Date() - new Date(message.createdTimestamp)}ms`,
-              true
-            )
-            .addField("💖|Mah Heart", `${Math.floor(bot.ws.ping)}ms`, true)
-            .setFooter(
-              "Ping for" + bot.user.username,
-              bot.user.displayAvatarURL()
-            )
-            .setTimestamp();
-
-        message.channel
-          .send(pingEmbed)
-          .then((m) => m.delete({ timeout: 3000 }));
-      }
-    }
-  }
-
-  //ping
-  if (message.content.toLowerCase().startsWith(prefix + "ping")) {
-    if (message.channel.id !== "684657636150345769") return null;
-    {
-      var pingEmbed = new Discord.MessageEmbed()
-        .setColor("RANDOM")
-        .setTitle("!PONG")
-        .addField(
-          "📶|Latency",
-          `${new Date() - new Date(message.createdTimestamp)}ms`,
-          true
-        )
-        .addField("💖|Mah Heart", `${Math.floor(bot.ws.ping)}ms`, true)
-        .setFooter("Ping for" + bot.user.username, bot.user.displayAvatarURL())
-        .setTimestamp();
-
-      message.channel.send(pingEmbed).then((m) => m.delete({ timeout: 4000 }));
-    }
-  }
-  //uptime
-  if (message.content.toLowerCase().startsWith(prefix + "uptime")) {
-    message.channel.send(
-      `**kawai chan** was last restarted **${(bot.uptime / 60000).toFixed(
-        0
-      )} minutes** ago!`
-    );
-  }
+  
   });
 
-bot.login(token);
+bot.login('NzI1NzgyNzY1NjkzNDM1OTA1.XvTv3w.MDzWPe6RPlKp6qoE_Zp2jHJzOBQ');
