@@ -1973,7 +1973,7 @@ bot.on("message", (message) => {
         0
       )} minutes** ago!`
     );
-  }
+  };
 });
 
 bot.login("NzI1NzgyNzY1NjkzNDM1OTA1.XvTv3w.SPZgcjlB77zmirqto_sgV2-6WvA");
