@@ -1730,13 +1730,12 @@ bot.on("message", (message) => {
       person.roles.add(mainrole.id);
       person.roles.remove(muterole.id);
 
-      message.channel.send(`${user.toString()}`).then((sent) => {
-        sent.edit({
+      message.channel.send({
           embed: {
             color: "BLACK",
             description: ` ${person.toString()}  got unmuted,k please dont do anything to get muted again`,
           },
-        });
+        
       });
     }, ms(time));
     {
@@ -1744,8 +1743,9 @@ bot.on("message", (message) => {
         .addField("Action", "Tempmute", true)
         .addField("Moderator", message.author.tag, true)
         .addField("Reason", "`" + reason + "`", true)
-        .addField("whom", member.user.tag, true)
-        .setFooter("Muted for ", ` ${time}`, true)
+        .addField("whom", person.user.tag, true)
+        .addField("Muted for ", ` ${time}`, true)
+        .setFooter("Muted at " + new Date())
         .setColor("#c7c5c5");
       modlog.send({
         embed: reasonembed,
