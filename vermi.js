@@ -35,7 +35,7 @@ var parseTime = function (milliseconds) {
 bot.on("ready", () => {
   console.log("konichiwaa!");
 
-  bot.user.setActivity(` Love in the air`, {
+  bot.user.setActivity(`mist in the air`, {
     type: "STREAMING",
     url: "https://www.twitch.tv/.",
   });
@@ -285,6 +285,7 @@ bot.on("message", (message) => {
               "--mutes a mentioned user [doesnt have time limit]"
             )
             .addField(prefix + "**unmute**", "--unmutes a user")
+            .addField(prefix + "**tmute**", "-- temp mutes a user")
             .addField(prefix + "**warn**", "-- warns a user")
             .addField(prefix + "**unwarn**", "--removes the warning")
             .addField(prefix + "**kick**", "--kicks a user")
@@ -493,7 +494,7 @@ bot.on("message", (message) => {
       )
       .addField(
         "<a:1_emoji_89:695280101830557815>|#10",
-        "Do not abuse any bugs or your perms, if you find a bug please report it in [<#685156265801941060>]( https://discord.gg/G35CMMj)."
+        "Do not abuse any bugs or your perms, if you find a bug or problem please report it in [<#685156265801941060>]( https://discord.gg/G35CMMj)."
       )
       .addField(
         "<a:1_emoji_89:695280101830557815>|#11",
@@ -509,7 +510,7 @@ bot.on("message", (message) => {
       )
       .addField(
         "<a:1_emoji_89:695280101830557815>|#14",
-        "Have fun!!! (And invite your friends! [Server link (https://discord.gg/G35CMMj)]"
+        "Have fun!!! (And invite your friends! [Server link](https://discord.gg/G35CMMj)"
       )
       .setFooter("Rules by" + message.author.username)
       .setTimestamp();
@@ -622,7 +623,9 @@ bot.on("message", (message) => {
         if (!amount) {
           message.reply("Please provide an amount.");
         } else {
-          message.channel.bulkDelete(amount);
+          message.channel
+            .bulkDelete(amount)
+            .catch((error) => console.log(error));
           var PurgeEmbed = new Discord.MessageEmbed()
             .setColor("BLUE")
             .setAuthor(bot.user.tag, bot.user.avatarURL)
@@ -640,7 +643,9 @@ bot.on("message", (message) => {
           if (!amount) {
             message.reply("Please provide an amount.");
           } else {
-            message.channel.bulkDelete(amount);
+            message.channel
+              .bulkDelete(amount)
+              .catch((error) => console.log(error));
             var PurgeEmbed = new Discord.MessageEmbed()
               .setColor("BLUE")
               .setAuthor(bot.user.tag, bot.user.avatarURL)
@@ -1731,11 +1736,10 @@ bot.on("message", (message) => {
       person.roles.remove(muterole.id);
 
       message.channel.send({
-          embed: {
-            color: "BLACK",
-            description: ` ${person.toString()}  got unmuted,k please dont do anything to get muted again`,
-          },
-        
+        embed: {
+          color: "BLACK",
+          description: ` ${person.toString()}  got unmuted,k please dont do anything to get muted again`,
+        },
       });
     }, ms(time));
     {
@@ -1787,10 +1791,34 @@ bot.on("message", (message) => {
     message.channel.send({
       embed: {
         color: "BLACK",
-        description: ` <a:emoji_96:725928974877720677>|${person.toString()} **is muted** |\`${reason}\``,
+        description: ` <a:emoji_96:725928974877720677>|${person.toString()} **is muted** |\`${reason}\`**[NON-TIMED]**`,
       },
     });
     message.delete();
+    {
+      var reasonembed = new Discord.MessageEmbed()
+        .addField("Action", "Mute", true)
+        .addField("Moderator", message.author.tag, true)
+        .addField("Reason", "`" + reason + "`", true)
+        .addField("whom", person.user.tag, true)
+        .addField("Muted for ", "NON-TIMED", true)
+        .setFooter("Muted at " + new Date())
+        .setColor("#c7c5c5");
+      modlog.send({
+        embed: reasonembed,
+      });
+    }
+    {
+      var cmdembed = new Discord.MessageEmbed()
+        .addField("Action", "Mute", true)
+        .addField("Moderator", message.author.tag, true)
+        .setColor("#c7c5c5")
+        .setFooter("used at")
+        .setTimestamp();
+      cmdlog.send({
+        embed: cmdembed,
+      });
+    }
   }
 
   //UNMUTE ----------------------
@@ -1806,21 +1834,104 @@ bot.on("message", (message) => {
 
     if (!person) return message.reply("Please mention the Wizard | T_T");
 
+    var reason = args.slice(1).join(" ");
     let mainrole = message.guild.roles.cache.get("678412092260352010");
     let muterole = message.guild.roles.cache.get("693999103910084650");
+
     if (!mainrole) return message.channel.send("where is the verified role");
     if (!muterole) return message.channel.send("nuu cant find mute role");
+    if (!message.member.roles.cache.find((x) => x.name == "Muted"))
+      return message.channel.send(
+        "waaw he aint muted <:pff:724810113663238145>"
+      );
 
     person.roles.add(mainrole.id);
     person.roles.remove(muterole.id);
     message.channel.send({
       embed: {
         color: "BLACK",
-        description: ` <a:emoji_96:725928974877720677>|${person.toString()} **is unmuted** |`,
+        description: ` <a:emoji_96:725928974877720677>|${person.toString()} **is unmuted|** ${reason}`,
       },
     });
     message.delete();
+    {
+      var reasonembed = new Discord.MessageEmbed()
+        .addField("Action", "UNmute", true)
+        .addField("Moderator", message.author.tag, true)
+        .addField("Verdict", "`" + reason + "`", true)
+        .addField("whom", person.user.tag, true)
+        .setFooter("Unmuted at " + new Date())
+        .setColor("#c7c5c5");
+      modlog.send({
+        embed: reasonembed,
+      });
+    }
+    {
+      var cmdembed = new Discord.MessageEmbed()
+        .addField("Action", "UNmute", true)
+        .addField("Moderator", message.author.tag, true)
+        .setColor("#c7c5c5")
+        .setFooter("used at")
+        .setTimestamp();
+      cmdlog.send({
+        embed: cmdembed,
+      });
+    }
   }
+
+  //FUNNNNNNNN COMMANDSSSSSSSS\\\\\\------------------------------------------------------------------
+
+  //(1)GIFT =======
+  function gift() {
+    var gifts = [
+      ":dollar:",
+      ":chocolate_bar:",
+      ":cookie:",
+      ":gift:",
+      "<a:lovey2:719415784773910528>",
+      "<a:nitero:719407824349954099>",
+      ":money_with_wings:",
+      ":coffee:",
+      ":wine_glass:",
+      ":iphone:",
+      ":teddy_bear: ",
+      ":computer:",
+      ":heart:",
+      ":regional_indicator_f::regional_indicator_o::regional_indicator_l:  ",
+      ":desktop:",
+      ":bell:",
+      ":pizza:",
+      ":blue_car:",
+      ":broken_heart:",
+    ];
+    return gifts[Math.floor(Math.random() * gifts.length)];
+  }
+  if (message.content.toLowerCase().startsWith(prefix + "gift")) {
+    var msguser = message.mentions.members.first();
+    if (!msguser) {
+      return message.reply("Please provide a @mention to gift!");
+    } else {
+      if (msguser) {
+        var giftcEmbed = new Discord.MessageEmbed()
+          .setAuthor(msguser.user.tag, msguser.user.displayAvatarURL)
+          .setColor("BLUE")
+          .setTitle(":white_check_mark: Member has been gifted!");
+        message.channel
+          .send({ embed: giftcEmbed })
+          .then((m) => m.delete({ timeout: 4000 }));
+        var giftEmbed = new Discord.MessageEmbed()
+          .setAuthor(msguser.user.tag, msguser.user.displayAvatarURL)
+          .setColor("BLUE")
+          .setDescription(
+            "**" + message.author.tag + " gifted you " + gift() + "**."
+          );
+        msguser.send({ embed: giftEmbed });
+        message.delete();
+      }
+    }
+  }
+
+  //(2)PUNCH ++++++++========
 
   //Eval command\\
   if (message.content.toLowerCase().startsWith(prefix + "eval")) {
@@ -1973,7 +2084,7 @@ bot.on("message", (message) => {
         0
       )} minutes** ago!`
     );
-  };
+  }
 });
 
 bot.login("NzI1NzgyNzY1NjkzNDM1OTA1.XvTv3w.SPZgcjlB77zmirqto_sgV2-6WvA");
