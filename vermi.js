@@ -776,26 +776,6 @@ bot.on("message", (message) => {
       }
     }
 
-  //#3 ----SAY COMMAND
-  //embed Command\\
-  if (message.content.toLowerCase().startsWith(prefix + "embed"))
-    if (!message.member.hasPermission("MANAGE_GUILD")) {
-      return;
-    } else {
-      if (message.member.hasPermission("MANAGE_GUILD")) {
-        if (message.mentions.members.size < 1) {
-          if (args[0]) {
-            var SayEmbed = new Discord.MessageEmbed()
-              .setColor("#00c5fc")
-              .setThumbnail(message.author.avatarURL)
-              .setDescription(args.join(" "));
-            message.channel.send({ embed: SayEmbed });
-            message.delete();
-          }
-        }
-      }
-    }
-
   //SAY COMMAND\\------------------------
   if (
     message.content.startsWith(prefix + "say") &&
