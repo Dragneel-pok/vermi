@@ -8,6 +8,7 @@ const owner = config.owner;
 const dev = config.piggy;
 const superagent = require("superagent");
 const ms = require("ms");
+const { get } = require("superagent");
 
 var parseTime = function (milliseconds) {
   var seconds = Math.floor(milliseconds / 1000);
@@ -744,38 +745,6 @@ bot.on("message", (message) => {
     }
   }
 
-  //#2 crules
-  if (message.content.toLowerCase().startsWith(prefix + "crules"))
-    if (!message.member.hasPermission("MANAGE_MESSAGES")) {
-      return message
-        .reply("umm its a server management command!")
-        .then((m) => m.delete({ timeout: 3000 }));
-    } else {
-      if (message.member.hasPermission("MANAGE_MESSAGES")) {
-        if (message.mentions.members.size < 1) {
-          var user = message.mentions.members.first();
-          var crulesembed = new Discord.MessageEmbed()
-            .setAuthor(bot.user.username, message.author.displayAvatarURL())
-            .setTitle("Please abide by these")
-            .setDescription(
-              "Be like a FAMILY, despite being different lets try to be one, cause Dragy never wants fights in family"
-            )
-            .addField("#1", "Stop doing the shit u are doing right now.")
-            .addField("#2", "keep the chat clean and friendly")
-            .addField("#3", "No offending or offenciveness towards anyone")
-            .addField(
-              "#4",
-              "Got a problem! Report to <#686431099781644308> with `--report@user` and put the details needed! mods will get you"
-            )
-            .setFooter("Chat rules by" + message.author.username)
-            .setTimestamp();
-          message.channel.send({ embed: crulesembed });
-
-          message.delete();
-        }
-      }
-    }
-
   //SAY COMMAND\\------------------------
   if (
     message.content.startsWith(prefix + "say") &&
@@ -1018,7 +987,7 @@ bot.on("message", (message) => {
      __**Some extra Questions,answer them in the same format below**__
   
  > \`Previous clan\` -- **\`Clan Name\`**
- > \`Esports experience\` > **\`No |Fair enough| GooD| Regulars\`**
+ > \`Esports experience\` -- **\`No |Fair enough| GooD| Regulars\`**
  > \`Joining for\`-- **\`Esports | Casual Rank Playing| Time pass\`**
   __**Now after that please include Your GAME STATS PIC RIGHT BELOW**__`);
     message.channel.send({ embed: applyembed });
@@ -1190,7 +1159,11 @@ bot.on("message", (message) => {
         .setColor("#aef105")
         .addField(
           "**Clan Wizards **--are Clan MemberS",
-          "|How enrolled > Head over to <#677816256488931328> and just do `+clanapply` make sure to do what's written there | **or just watch what others did**"
+          "Please read the requirements in <#677560689732223027>"
+        )
+        .addField(
+          "**|How enrolled **",
+          " > Head over to <#677816256488931328> and just do `+clanapply` make sure to do what's written there | **or just watch what others did**"
         )
         .setFooter(message.author.username, message.author.displayAvatarURL())
         .setThumbnail(
@@ -1232,9 +1205,9 @@ bot.on("message", (message) => {
         .setColor("#aef105")
         .setDescription(
           ` __**12/7-Support-are our  Server Support Team**__ 
- > \`They can be  tagged  for all of ur queries about server\` -- **\`to a limit though\`**
- > \`To Enroll Active people in almost all channels are required\`--**\`cause u have to know inside-out of server\`**
- \`so hope u got what it takes\`--**\`if u wanna apply\`**
+ > \`⩎| They can be  tagged  for all of ur queries about server\` -- **\`to a limit though\`**
+ > \`⨹| To Enroll Active people in almost all channels are required\`--**\`cause u have to know inside-out of server\`**
+ > \`⨀| so if u wanna apply\`--**\`Just say it to anyone from Management\`**
  `
         )
         .setFooter(message.author.username, message.author.displayAvatarURL())
@@ -1243,7 +1216,7 @@ bot.on("message", (message) => {
         );
     message.channel
       .send({ embed: modembed })
-      .then((m) => m.delete({ timeout: 10000 }));
+      .then((m) => m.delete({ timeout: 20000 }));
   }
 
   //HOW-PARTNER
@@ -1252,7 +1225,7 @@ bot.on("message", (message) => {
     if (message.member.hasPermission("MANAGE_SERVER"))
       var modembed = new Discord.MessageEmbed()
         .setAuthor(bot.user.username)
-        .setTitle("For now Dragneel doesnt want partnership")
+        .setTitle("For now Dragneel doesn't want partnership")
         .setColor("#aef105")
         .setFooter(message.author.username, message.author.displayAvatarURL())
         .setThumbnail(
@@ -1301,7 +1274,8 @@ bot.on("message", (message) => {
         .setColor("#aef105")
         .setDescription(
           `__**Abroaders- Other servers MODS/ADMINS**__
-  > \`Server \` > **\`Must be a Server of 10K+ MEMBERS \`**
+  > \`Ξ|For now we are restricting the role to 1 member of the server\`--\`meaning only 1 member from ur server will get the role\`
+  > \`Ξ|Server \` > **\`Must be a Server of 5K+ MEMBERS \`**
   > \`Ξ| well i dont mind if i don't even get the least amount of respect u can give  \`- **\`But my MODS and ADMINS are very precious to me \`**
   > \`Ξ| so if u wish to get the special role here , my family should get the same respect in your HOME SERVER \``
         )
@@ -1311,7 +1285,7 @@ bot.on("message", (message) => {
         );
     message.channel
       .send({ embed: modembed })
-      .then((m) => m.delete({ timeout: 20000 }));
+      .then((m) => m.delete({ timeout: 30000 }));
   }
 
   //HOW TO --------------------------------------\\
@@ -1910,6 +1884,51 @@ bot.on("message", (message) => {
       }
     }
   }
+
+  //DOG command\\
+  if (message.content.toLowerCase().startsWith(prefix + "dog")) {
+    if (!message.member.hasPermission("ATTACH_FILE")) {
+      return message.reply("Sorry, you don't have permissions to use this!");
+    }
+    if (message.member.hasPermission("ATTACH_FILE")) {
+      get("https://dog.ceo/api/breeds/image/random").then((res) => {
+        let embed = new Discord.MessageEmbed()
+          .setColor("CYAN")
+          .setAuthor(bot.user.username, message.guild.iconURL())
+          .setImage(res.body.message)
+          .setTimestamp()
+          .setFooter(`Requested by` + message.author.username);
+
+        message.channel.send(embed);
+        message.delete();
+      });
+    }
+  }
+  //CATT-------------------------
+  var randomCat = require("random-cat");
+  var url = randomCat.get();
+
+  if (message.content.toLowerCase().startsWith(prefix + "cat")) {
+    if (!message.member.hasPermission("ATTACH_FILE")) {
+      return message.reply("Sorry, you don't have permissions to use this!");
+    }
+    if (message.member.hasPermission("ATTACH_FILE")) {
+      get("url")
+        .then((res) => {
+          let embed = new Discord.MessageEmbed()
+            .setColor("CYAN")
+            .setAuthor(bot.user.username, message.guild.iconURL())
+            .setImage(res.body.url)
+            .setTimestamp()
+            .setFooter(`Requested by` + message.author.username);
+
+          message.channel.send(embed);
+          message.delete();
+        })
+        .catch((error) => message.channel.send(error));
+    }
+  }
+  //CAT---------
 
   //(2)PUNCH ++++++++========
 
