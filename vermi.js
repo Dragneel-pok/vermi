@@ -1887,10 +1887,13 @@ bot.on("message", (message) => {
 
   //DOG command\\
   if (message.content.toLowerCase().startsWith(prefix + "dog")) {
-    if (!message.member.hasPermission("ATTACH_FILE")) {
-      return message.reply("Sorry, you don't have permissions to use this!");
-    }
-    if (message.member.hasPermission("ATTACH_FILE")) {
+    if (!message.member.hasPermission("ATTACH_FILES")) {
+      return message
+        .reply("No perms")
+        .then((m) => m.delete({ timeout: 3000 }));
+    } else {
+      if (message.member.hasPermission("ATTACH_FILES")) {
+        if (message.mentions.members.size < 1) {
       get("https://dog.ceo/api/breeds/image/random").then((res) => {
         let embed = new Discord.MessageEmbed()
           .setColor("CYAN")
@@ -1904,21 +1907,21 @@ bot.on("message", (message) => {
       });
     }
   }
+}}
   //CATT-------------------------
-  var randomCat = require("random-cat");
-  var url = randomCat.get();
+ 
 
   if (message.content.toLowerCase().startsWith(prefix + "cat")) {
-    if (!message.member.hasPermission("ATTACH_FILE")) {
+    if (!message.member.hasPermission("ATTACH_FILES")) {
       return message.reply("Sorry, you don't have permissions to use this!");
     }
-    if (message.member.hasPermission("ATTACH_FILE")) {
-      get("url")
+    if (message.member.hasPermission("ATTACH_FILES")) {
+      get("https://aws.random.cat/meow")
         .then((res) => {
           let embed = new Discord.MessageEmbed()
             .setColor("CYAN")
             .setAuthor(bot.user.username, message.guild.iconURL())
-            .setImage(res.body.url)
+            .setImage(res.body.file)
             .setTimestamp()
             .setFooter(`Requested by` + message.author.username);
 
@@ -1928,9 +1931,14 @@ bot.on("message", (message) => {
         .catch((error) => message.channel.send(error));
     }
   }
-  //CAT---------
+
 
   //(2)PUNCH ++++++++========
+
+
+
+
+  
 
   //Eval command\\
   if (message.content.toLowerCase().startsWith(prefix + "eval")) {
